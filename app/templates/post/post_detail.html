@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Detail View</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detail-view.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="detail-view-container">
+        <div class="post-header">
+            <h3 class="post-author">{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+            {% if current_user.id == post.user.id %}
+                <div class="edit-post-links">
+                    <a href="{{ url_for('post.update_post', post_id=post.id) }}" class="edit-link">Edit</a>
+                    <a href="{{ url_for('post.delete_post', post_id=post.id) }}" class="delete-link">Delete</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="post-content">
+            <p>{{ post.content }}</p>
+            {% if post.post_img %}
+                <img src="{{ url_for('static', filename='data/' + post.user.email + '/' + post.post_img) }}" alt="My Image" class="post-image">
+            {% endif %}
+        </div>
+        
+        <div class="post-interactions">
+            <form action="{{ url_for('post.comment', post_id=post.id) }}" method="POST" class="comment-form">
+                {{ form.csrf_token }}
+                {{ form.content(placeholder='Add a comment', class='comment-input') }}
+                {{ form.create(class='comment-submit') }}
+            </form>
+            
+            {% if comments %}
+                <div class="comments">
+                    <h4 class="comments-heading">Comments</h4>
+                    {% for comment in comments %}
+                        <div class="comment">
+                            <h5 class="comment-author">{{ comment.user.first_name }} {{ comment.user.last_name }}</h5>
+                            <p class="comment-content">{{ comment.content }} {{ comment.created_at }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% if likes %}
+                <div class="likes">
+                    <h4 class="likes-heading">Liked by</h4>
+                    {% for like in likes %}
+                        <p class="like-author">{{ like.user.first_name }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

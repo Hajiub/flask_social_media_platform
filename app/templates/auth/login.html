@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Log in</title>
+{% endblock %}
+
+{% block content %}
+    <div class="login-container">
+        <h1>Welcome back</h1>
+        <form method='post'>
+            <p>{{ form.csrf_token }}</p>
+            {% with err_mess = get_flashed_messages() %}
+                {% if err_mess %}
+                    <p class="error-message">{{ err_mess[0] }}</p>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-group">
+                {{ form.email.label(class_='form-label') }}
+                {{ form.email(class_='form-control') }}
+                {% for error in form.email.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label(class_='form-label') }}
+                {{ form.password(class_='form-control') }}
+                {% for error in form.password.errors %}
+                    <p class="error-message">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="form-group form-check">
+                {{ form.remember_me(class_='form-check-input') }}
+                {{ form.remember_me.label(class_='form-check-label') }}
+            </div>
+
+            <p class="submit-button">{{ form.submit(class_='btn btn-primary') }}</p>
+        </form>
+    </div>
+{% endblock %}

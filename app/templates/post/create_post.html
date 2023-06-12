@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Create Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create-post.css') }}">
+{% endblock head %}
+{% block content %}
+    <div class="create-post-container">
+        <h1 class="create-post-heading">Create Post</h1>
+        {% with err_msg=get_flashed_messages() %}
+            {% if err_msg %}
+            <ul>
+                {% for msg in err_msg %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+        <form action="{{ url_for('post.create_post') }}" method="post" enctype="multipart/form-data" class="create-post-form">
+            {{ form.csrf_token }}
+            <p class="form-field">
+                {{ form.content }}
+                {% for error in form.content.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                {{ form.image }}<br>
+                {% for error in form.image.errors %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                {{ form.create(value='Create Post', class='create-post-submit') }}
+            </p>
+        </form>
+    </div>
+{% endblock content %}

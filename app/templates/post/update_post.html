@@ -1,0 +1,35 @@
+<!-- template.html -->
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Update</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock head %}
+
+{% block content %}
+    <div class="update-post">
+        <h3 class="post-heading">Update Post: "{{ post.content }}"</h3>
+        <form action="{{ url_for('post.update_post', post_id=post.id) }}" method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="content">Content:</label>
+                {{ form.content }}
+                <ul class="error-list">
+                    {% for error in form.content.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="form-group">
+                <label for="image">Image:</label>
+                {{ form.image }}
+                <ul class="error-list">
+                    {% for error in form.image.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {{ form.update }}
+        </form>
+    </div>
+{% endblock content %}

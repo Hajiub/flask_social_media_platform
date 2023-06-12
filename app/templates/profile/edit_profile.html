@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Edit Your Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile-edit.css') }}">
+{% endblock head %}
+{% block content %}
+    {% with err_msg=get_flashed_messages()  %}
+    <ul>
+        {% for error in err_msg %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endwith %}
+    <div class="profile-edit-container">
+        <h1 class="edit-heading">Edit Your Profile</h1>
+        <form method='post' action="{{ url_for('profiles.edit_profile') }}" enctype="multipart/form-data" class="profile-edit-form">
+            {{ form.csrf_token }}
+            <p class="form-field">
+                <label for="{{ form.pro_pic.id }}">Profile Picture:</label>
+                {{ form.pro_pic }}
+                {% for error in form.pro_pic.errors  %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                <label for="{{ form.bio.id }}">Bio:</label>
+                {{ form.bio(placeholder='Your Bio goes here!') }}
+                {% for error in form.bio.errors  %}
+                    <span class="form-error">{{ error }}</span>
+                {% endfor %}
+            </p>
+            <p class="form-field">
+                {{ form.add(value='Submit!', class='profile-edit-submit') }}
+            </p>
+        </form>
+    </div>
+{% endblock content %}

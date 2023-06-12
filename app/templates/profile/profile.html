@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>{{ current_user.first_name }}'s profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock  %}
+{% block content %}
+    <div class="profile-container">
+        <div class="profile-header">
+            {% if current_user.profile_pic %}
+            <a href="{{ url_for('profiles.edit_profile') }}">
+                <img class="profile-pic" src="{{ url_for('static', filename='data/'+ current_user.email + '/' + current_user.profile_pic) }}">
+            </a>
+            {% else %}
+            <a href="{{ url_for('profiles.edit_profile') }}">
+                <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
+            </a>
+            {% endif %}
+            <h1 class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+            <p class="profile-email">{{ current_user.email }}</p>
+        </div>
+        <div class="profile-content">
+            <div class="profile-info">
+                <div class="profile-info-item">
+                    <span class="info-label">Birthday:</span>
+                    <span class="info-value">{{ current_user.birthday }}</span>
+                </div>
+                {% if current_user.user_bio  %}
+                <div class="profile-info-item">
+                    <span class="info-label">Bio:</span>
+                    <span class="info-value">{{ current_user.user_bio }}</span>
+                </div>
+                {% else %}
+                <a href="{{ url_for('profiles.edit_profile') }}" class="profile-bio-link">Tell us something about you!</a>
+                {% endif %}
+            </div>
+            <div class="profile-actions">
+                <a href="{{ url_for('profiles.edit_profile') }}" class="profile-action-btn">Edit Profile</a>
+                <a href="{{ url_for('auth.logout') }}" class="profile-action-btn">Logout</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

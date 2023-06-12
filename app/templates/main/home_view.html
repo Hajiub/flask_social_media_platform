@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Home</title>
+{% endblock head %}
+
+{% block content %}
+    {% with err_msg=get_flashed_messages()  %}
+        {% if err_msg %}
+        <ul>
+            {% for msg in err_msg %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+    <div class='post-container'>
+    {% if posts_list %}
+        {% for post in posts_list %}
+            <div class="post">
+                {% if post.user.profile_pic %} 
+                <a href="{{ url_for('profiles.user_profile', user_id=post.user.id) }}">
+                    <img class="profile-pic" src="{{ url_for('static', filename='data/' + post.user.email + '/' + post.user.profile_pic) }}" alt="Profile Picture">
+                </a>
+                {% else %}
+                <a href="{{ url_for('profiles.user_profile', user_id=post.user.id) }}">
+                    <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
+                </a>
+                {% endif %}
+                <div class="post-content">
+                    <h3>{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+                    <p>{{ post.content }}</p>
+                    
+                    {% if post.post_img %}
+                    <img class="post-img" src="{{ url_for('static', filename='data/' + post.user.email + '/' + post.post_img) }}" alt="Post Image">
+                    {% endif %}
+                    <div class="post-actions">
+                        <a href="{{ url_for('post.like_post_view', post_id=post.id) }}">Like</a>
+                        <a href="{{ url_for('post.detail_post_view', post_id=post.id) }}">Comment</a>
+                        <span>{{ post.likes_count }} Likes</span>
+                        <span>{{ post.comments_count }} Comments</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+    <h2>Post something<a href="{{ url_for('post.create_post') }}"> Here</a></h2>
+    {% endif %}
+    </div>
+{% endblock content %}
