@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Friend Requests</title>
+{% endblock head %}
+
+{% block content %}
+    <div class="friend-requests">
+        {% if friends_list %}
+            <div class="friend-container">
+                {% for friend in friends_list %}
+                    <div class="friend-card">
+                        <div class="profile-picture">
+                            {% if friend.profile_pic %} 
+                                <a href="{{ url_for('profiles.user_profile', user_id=friend.id) }}">
+                                    <img class="profile-pic" src="{{ url_for('static', filename='data/' + friend.email + '/' + friend.profile_pic) }}" alt="Profile Picture">
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('profiles.user_profile', user_id=friend.id) }}">
+                                    <img class="profile-pic" src="{{ url_for('static', filename='images/default_image.jpeg') }}" alt="Default Profile Picture">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="username">
+                            <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
+                        </div>
+                        <div class="buttons">
+                            <button class="accept-btn" onclick="Accept('{{ friend.id }}', 'accept')">Accept</button>
+                            <button class="delete-btn" onclick="Delete('{{ friend.id }}', 'delete')">Delete</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-requests">No friend requests at the moment.</p>
+        {% endif %}
+    </div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock content %}

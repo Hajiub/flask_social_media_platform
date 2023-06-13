@@ -10,6 +10,7 @@ from . import main
 
 
 @main.route('/')
+@login_required
 def home():
     posts = Post.query.options(joinedload(Post.user)).order_by(Post.created_at).all()
     for post in posts:

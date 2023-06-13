@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     comments = db.relationship('Comment', backref='user', cascade='all, delete-orphan')
     likes = db.relationship('Like', backref='user', cascade='all, delete-orphan')
     
+    
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} ({self.email})>"
 class Post(db.Model):
@@ -81,9 +82,9 @@ class FriendRequest(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    friend_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
+    friend_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, unique=True)
     sented_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-
+    
     def __repr__(self):
         return f"<FriendRequest {self.user_id} -- {self.friend_id}>"
 
