@@ -20,7 +20,7 @@
                         <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
                     </a>
                 {% else %}
-                    <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
+                <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
                 {% endif %}
             {% endif %}
             <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
@@ -45,8 +45,12 @@
                 {% endif %}
             </div>
             <div class="profile-actions">
-                <a href="{{ url_for('friend.add_friend', friend_id=user.id) }}" class="profile-action-btn">Add Friend</a>
-                <a href="#" class="profile-action-btn">Message</a>
+                {% if user in current_user.friends %}
+                    <a href="{{ url_for('friend.delete_friend', friend_id=user.id) }}" class="profile-action-btn">Unfriend</a>
+                    <a href="#" class="profile-action-btn">Message</a>
+                {% else %}
+                    <a href="{{ url_for('friend.send_friend_request', friend_id=user.id) }}" class="profile-action-btn">Add Friend</a>
+                {% endif %}
             </div>
         </div>
     </div>

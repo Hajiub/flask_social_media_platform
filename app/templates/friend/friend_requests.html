@@ -5,7 +5,19 @@
 {% endblock head %}
 
 {% block content %}
+    <div class='errors'>
+        {% with err_msg=get_flashed_messages()  %}
+            {% if err_msg %}
+                <ul>
+                    {% for msg in err_msg %}
+                        <li>{{ msg }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
     <div class="friend-requests">
+        <a href="{{ url_for('friend.friends_list') }}">Friends</a>
         {% if friends_list %}
             <div class="friend-container">
                 {% for friend in friends_list %}
@@ -25,8 +37,12 @@
                             <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
                         </div>
                         <div class="buttons">
-                            <button class="accept-btn" onclick="Accept('{{ friend.id }}', 'accept')">Accept</button>
-                            <button class="delete-btn" onclick="Delete('{{ friend.id }}', 'delete')">Delete</button>
+                            <a href="{{ url_for('friend.accept_friend_request', friend_id=friend.id) }}">
+                                <button class="accept-btn" >Accept</button>
+                            </a>
+                            <a href="{{ url_for('friend.delete_friend_request', friend_id=friend.id) }}">
+                                <button class="delete-btn" >Delete</button>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}

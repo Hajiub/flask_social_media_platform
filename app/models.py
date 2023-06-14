@@ -20,7 +20,13 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='user', cascade='all, delete-orphan')
     comments = db.relationship('Comment', backref='user', cascade='all, delete-orphan')
     likes = db.relationship('Like', backref='user', cascade='all, delete-orphan')
-    
+    friends = db.relationship(
+        'User',
+        secondary='friend_list',
+        primaryjoin='User.id == FriendList.user_id',
+        secondaryjoin='User.id == FriendList.friend_id',
+        backref='friend_of'
+    )
     
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} ({self.email})>"
