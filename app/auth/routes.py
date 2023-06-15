@@ -6,32 +6,28 @@ from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, current_user
 import os
-
+from app import csrf
+from .utils import MakeFolder
 
 @auth.route('/signin', methods=['POST', 'GET'])
+@csrf.exempt
 def signin():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     form = SigninForm()
     if form.validate_on_submit():
-        if session.get('_csrf_token') != request.form.get('_csrf_token'):
-            return abort(400, 'Invalid CSRF Token')
-        try:
-            user = User(
+        user = User(
                 first_name = form.data.get('first_name'),
                 last_name  = form.data.get('last_name'),
                 email      = form.data.get('email'),
                 password   = generate_password_hash(form.data.get('password1'), 'sha256'),
                 birthday   = form.data.get('birthday'),
-            )
+        )
+        try:
             db.session.add(user)
             db.session.commit()
-            user_folder = os.path.join(current_app.config['UPLOAD_FOLDER'], user.email)
-            post_images_folder = os.path.join(user_folder, "post_images")
-            profile_pictures_folder = os.path.join(user_folder, "profile_pictures")
-            os.makedirs(user_folder, exist_ok=True)
-            os.makedirs(post_images_folder, exist_ok=True)
-            os.makedirs(profile_pictures_folder, exist_ok=True)
+            user_dep = MakeFolder(current_app, user=user)
+            user_dep.make_folder()
         except Exception as e:
             flash('Something went wrong. Please try again! Error: ' + str(e))
             return redirect(url_for('auth.signin'))
@@ -39,13 +35,12 @@ def signin():
     return render_template('auth/signin.html', form=form)
 
 @auth.route('/login', methods=['POST', 'GET'])
+@csrf.exempt
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     form  = LoginForm()
     if form.validate_on_submit():
-        if session.get('_csrf_token') != request.form.get('_csrf_token'):
-            return abort(400, 'Invalid CSRF Token')
         # Check if the email already exists
         user = User.query.filter_by(email= form.data.get('email')).first()
         if not user:

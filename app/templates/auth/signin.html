@@ -45,9 +45,15 @@
 {% block content %}
 <div class="container">
   <h2>Create Account</h2>
+  {% with err_msg=get_flashed_messages() %}
+    <ul>
+      {% for error in err_msg %}
+          <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  {% endwith %}
   <form method="post" action="{{ url_for('auth.signin') }}">
     {{ form.csrf_token }}
-    
     <div class="form-group">
       {{ form.first_name.label }}{{ form.first_name(placeholder="First name", class="form-control") }}
       {% for error in form.first_name.errors %}
@@ -82,7 +88,6 @@
         <span class="error">{{ error }}</span>
       {% endfor %}
     </div>
-    
     <div class="form-group">
       {{ form.birthday.label() }}{{ form.birthday(placeholder="Birthday", class="form-control") }}
       {% for error in form.birthday.errors %}
@@ -93,4 +98,5 @@
     {{ form.submit(class="btn") }}
   </form>
 </div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock content %}

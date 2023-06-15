@@ -1,13 +1,4 @@
- def is_visible_to_user(self, user):
-        # Check if the user is the owner of the post
-        if user.id == self.user_id:
-            return True
 
-        # Check if the user is friends with the owner of the post
-        friends = FriendList.query.filter_by(user_id=user.id).all()
-        friend_ids = [friend.friend_id for friend in friends]
-        
-        return self.user_id in friend_ids
 
 from flask import render_template
 from flask_login import current_user

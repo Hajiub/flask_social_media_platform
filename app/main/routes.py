@@ -9,11 +9,20 @@ from . import main
 
 
 
+
 @main.route('/')
 @login_required
 def home():
-    posts = Post.query.options(joinedload(Post.user)).order_by(Post.created_at).all()
-    for post in posts:
+    user = current_user  # Assuming you are using Flask-Login for authentication
+    
+    # Retrieve all posts
+    all_posts = Post.query.all()
+    
+    # Filter out the posts that are not visible to the current user
+    visible_posts = [post for post in all_posts if post.is_visible_to_user(user)]
+    for post in visible_posts:
         post.likes_count = db.session.query(func.count(Like.id)).filter_by(post_id=post.id).scalar()
-        post.comments_count = db.session.query(func.count(Comment.id)).filter_by(post_id=post.id).scalar()
-    return render_template("main/home_view.html",posts_list=posts)
+        post.comments_count = db.session.query(func.count(Comment.id)).filter_by(post_id=post.id).scalar()    
+    return render_template('main/home_view.html', posts_list=visible_posts)
+
+
