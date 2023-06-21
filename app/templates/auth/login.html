@@ -1,48 +1,63 @@
-{% extends 'base.html' %}
-
-{% block head %}
-    <title>Log in</title>
-{% endblock %}
-
-{% block content %}
-    <div class="login-container">
-        <h1>Welcome back</h1>
-
-        <form method='post'>
-            <p>{{ form.csrf_token }}</p>
-            {% with err_mess = get_flashed_messages() %}
-                {% if err_mess %}
-                    <p class="error-message">{{ err_mess[0] }}</p>
-                {% endif %}
-            {% endwith %}
-
-            <div class="form-group">
-                {{ form.email.label(class_='form-label') }}
-                {{ form.email(class_='form-control') }}
-                {% for error in form.email.errors %}
-                    <p class="error-message">{{ error }}</p>
-                {% endfor %}
-            </div>
-
-            <div class="form-group">
-                {{ form.password.label(class_='form-label') }}
-                {{ form.password(class_='form-control', type="password", id="id_password") }}
-                {% for error in form.password.errors %}
-                    <p class="error-message">{{ error }}</p>
-                {% endfor %}
-            </div>
-            <div class="view-pass">
-                <input type="checkbox" id="check">
-                <label for="check">View password</label>
-            </div>
-
-            <div class="form-group form-check">
-                {{ form.remember_me(class_='form-check-input') }}
-                {{ form.remember_me.label(class_='form-check-label') }}
-            </div>
-
-            <p class="submit-button">{{ form.submit(class_='btn btn-primary') }}</p>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In</title>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Welcome back</h1>
+  
+    <form method='post'>
+      <p>{{ form.csrf_token }}</p>
+      {% with err_mess = get_flashed_messages() %}
+        {% if err_mess %}
+          <p class="error-message">{{ err_mess[0] }}</p>
+        {% endif %}
+      {% endwith %}
+  
+      <div class="form-group">
+        {{ form.email.label(class_='form-label') }}
+        {{ form.email(class_='form-control') }}
+        {% for error in form.email.errors %}
+          <p class="error-message">{{ error }}</p>
+        {% endfor %}
+      </div>
+  
+      <div class="form-group">
+        {{ form.password.label(class_='form-label') }}
+        {{ form.password(class_='form-control', type="password", id="id_password") }}
+        {% for error in form.password.errors %}
+          <p class="error-message">{{ error }}</p>
+        {% endfor %}
+      </div>
+      <div class="view-pass">
+        <input type="checkbox" id="check">
+        <label for="check">View password</label>
+      </div>
+  
+      <div class="form-group form-check">
+        {{ form.remember_me(class_='form-check-input') }}
+        {{ form.remember_me.label(class_='form-check-label') }}
+      </div>
+  
+      <p class="submit-button">{{ form.submit(class_='btn btn-primary') }}</p>
+    </form>
+  </div>
+  <div class="greeting-message">
+    <header>
+        <h1>Welcome back to Abook!</h1>
+    </header>
+    <main>
+      <p>Unleash the power of words and dive into a world of literary wonders.</p>
+      <p>Reconnect with your bookish community, share your thoughts, and discover new perspectives.</p>
+    </main>
+    <div class="register-link">
+      <p>New to Abook? Join our community <a href="{{ url_for('auth.signin') }}">here</a></p>
     </div>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
-{% endblock %}
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  
+</body>
+</html>

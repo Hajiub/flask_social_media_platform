@@ -8,7 +8,7 @@
 {% block content %}
     <div class="detail-view-container">
         <div class="post-header">
-            <h3 class="post-author">{{ post.user.first_name }} {{ post.user.last_name }}</h3>
+            <h3 class="post-author">{{ post.user.username }} {{ post.user.last_name }}</h3>
             {% if current_user.id == post.user.id %}
                 <div class="edit-post-links">
                     <a href="{{ url_for('post.update_post', post_id=post.id) }}" class="edit-link">Edit</a>
@@ -36,7 +36,7 @@
                     <h4 class="comments-heading">Comments</h4>
                     {% for comment in comments %}
                         <div class="comment">
-                            <h5 class="comment-author">{{ comment.user.first_name }} {{ comment.user.last_name }}</h5>
+                            <h5 class="comment-author">{{ comment.user.username }} {{ comment.user.last_name }}</h5>
                             <p class="comment-content">{{ comment.content }} {{ comment.created_at }}</p>
                         </div>
                     {% endfor %}
@@ -47,7 +47,7 @@
                 <div class="likes">
                     <h4 class="likes-heading">Liked by</h4>
                     {% for like in likes %}
-                        <p class="like-author">{{ like.user.first_name }}</p>
+                        <p class="like-author">{{ like.user.username }}</p>
                     {% endfor %}
                 </div>
             {% endif %}

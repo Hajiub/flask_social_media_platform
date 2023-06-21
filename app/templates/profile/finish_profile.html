@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Finish Profile</title>
+<style>
+  .container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #555;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(66, 103, 178, 0.8);
+  }
+  
+  #intrest {
+    list-style-type: none;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+  }
+  
+  .submit-button {
+    text-align: center;
+  }
+  
+  .form-check-label {
+    color: #555;
+    font-size: 14px;
+    margin-left: 5px;
+    text-decoration: none; /* Remove text decoration */
+  }
+  
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    position: relative;
+    top: 3px;
+    vertical-align: middle;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4267B2;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #405892;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .container {
+      max-width: 90%;
+      padding: 30px;
+    }
+  }
+</style>
+{% endblock head %}
+
+{% block content %}
+{% with err_msg=get_flashed_messages()  %}
+        {% if err_msg %}
+        <ul>
+            {% for msg in err_msg %}
+                <li>{{ msg }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+<div class="container">
+  <h2>Finish Profile</h2>
+  <form method='post' action="{{ url_for('profiles.finish_profile') }}" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      <label class="form-label" for="{{ form.pro_pic.id_for_label }}">Profile Picture</label>
+      {{ form.pro_pic(class="form-control") }}
+      {% for error in form.pro_pic.errors %}
+        <span class="error">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
+      {{ form.bio(class="form-control") }}
+      {% for error in form.bio.errors  %}
+        <span class="error">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="{{ form.interest.id_for_label }}">Interest</label>
+      {{ form.interest(class="form-control", id="intrest") }}
+      {% for error in form.interest.errors %}
+        <span class="error">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="{{ form.country.id_for_label }}">Country</label>
+      {{ form.country(class="form-control") }}
+      {% for error in form.country.errors %}
+        <span class="error">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="{{ form.birthday.id_for_label }}">Birthday</label>
+      {{ form.birthday(placeholder="Birthday", class="form-control") }}
+      {% for error in form.birthday.errors %}
+        <span class="error">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="form-group">
+      <input type="checkbox" class="form-check-input" id="check" required>
+      <label class="form-check-label" for="check">I agree to the terms and conditions</label>
+    </div>
+
+    <div class="submit-button">
+      {{ form.finish(class="btn") }}
+    </div>
+  </form>
+</div>
+{% endblock content %}

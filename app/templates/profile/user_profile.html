@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block head %}
-    <title>{{ user.first_name }}'s profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <title>{{ user.username }}'s profile</title>
+    
 {% endblock  %}
 {% block content %}
     <div class="profile-container">
@@ -23,7 +23,7 @@
                 <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
                 {% endif %}
             {% endif %}
-            <h1 class="profile-name">{{ user.first_name }} {{ user.last_name }}</h1>
+            <h1 class="profile-name">{{ user.username }} {{ user.last_name }}</h1>
             <p class="profile-email">{{ user.email }}</p>
         </div>
         <div class="profile-content">

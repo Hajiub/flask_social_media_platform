@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block head %}
-    <title>{{ current_user.first_name }}'s profile</title>
+    <title>{{ current_user.username }}'s profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 {% endblock  %}
 {% block content %}
@@ -15,7 +15,7 @@
                 <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
             </a>
             {% endif %}
-            <h1 class="profile-name">{{ current_user.first_name }} {{ current_user.last_name }}</h1>
+            <h1 class="profile-name">{{ current_user.username }} {{ current_user.last_name }}</h1>
             <p class="profile-email">{{ current_user.email }}</p>
         </div>
         <div class="profile-content">
@@ -23,6 +23,8 @@
                 <div class="profile-info-item">
                     <span class="info-label">Birthday:</span>
                     <span class="info-value">{{ current_user.birthday }}</span>
+                    <span class="info-label">Country:</span>
+                    <span class="info-value">{{ current_user.country }}</span>
                 </div>
                 {% if current_user.user_bio  %}
                 <div class="profile-info-item">

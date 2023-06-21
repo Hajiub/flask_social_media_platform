@@ -34,7 +34,7 @@
                             {% endif %}
                         </div>
                         <div class="username">
-                            <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
+                            <h3>{{ friend.username }} {{ friend.last_name }}</h3>
                         </div>
                         <div class="buttons">
                             <a href="#">
@@ -48,18 +48,7 @@
                 {% endfor %}
             </div>
         {% else %}
-            <p class="no-requests">No friend requests at the moment.</p>
+            <p class="no-requests">Find your friends! <a href="{{ url_for('friend.friend_requests') }}">Here</a></p>
         {% endif %}
     </div>
-
-    <script>
-        // JavaScript functionality for Friend Requests Page
-        const friendCards = document.querySelectorAll('.friend-card');
-
-        friendCards.forEach((card) => {
-            card.addEventListener('click', () => {
-                // Perform action when a friend card is clicked
-            });
-        });
-    </script>
 {% endblock content %}

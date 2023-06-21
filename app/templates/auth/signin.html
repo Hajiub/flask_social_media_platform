@@ -1,102 +1,80 @@
-{% extends 'base.html' %}
-
-{% block head %}
-<title>Create Account</title>
-<style>
-  .container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-  }
-  
-  .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #4267B2;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
-  .btn:hover {
-    background-color: #405892;
-  }
-</style>
-{% endblock head %}
-
-{% block content %}
-<div class="container">
-  <h2>Create Account</h2>
-  {% with err_msg=get_flashed_messages() %}
-    <ul>
-      {% for error in err_msg %}
-          <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  {% endwith %}
-  <form method="post" action="{{ url_for('auth.signin') }}">
-    {{ form.csrf_token }}
-    <div class="form-group">
-      {{ form.first_name.label }}{{ form.first_name(placeholder="First name", class="form-control") }}
-      {% for error in form.first_name.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+</head>
+<body>
+  <div class="container">
+    <h2>Create Account</h2>
+    {% with err_msg=get_flashed_messages() %}
+      {% if err_msg %}
+        <ul>
+          {% for error in err_msg %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    <form method="post" action="{{ url_for('auth.signin') }}">
+      {{ form.csrf_token }}
+      
+      <div class="form-group">
+        {{ form.first_name.label }}{{ form.first_name(placeholder="First name", class="form-control") }}
+        {% for error in form.first_name.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group">
+        {{ form.last_name.label }}{{ form.last_name(placeholder="Last name", class="form-control") }}
+        {% for error in form.last_name.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group">
+        {{ form.email.label() }}{{ form.email(placeholder="Email Address", class="form-control") }}
+        {% for error in form.email.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group">
+        {{ form.password1.label() }}{{ form.password1(placeholder="Password", class="form-control") }}
+        {% for error in form.password1.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      <div class="form-group">
+        {{ form.password2.label() }}{{ form.password2(placeholder="Confirm Password", class="form-control") }}
+        {% for error in form.password2.errors %}
+          <span class="error">{{ error }}</span>
+        {% endfor %}
+      </div>
+      
+      {{ form.submit(class="btn") }}
+    </form>
+  </div>
+  <div class="signin-greeting">
+    <header>
+      <h1>Welcome to Abook, a haven for book lovers like you! 📚✨</h1>
+    </header>
+    <main>
+      <p>
+        We're thrilled to have you as part of our vibrant community, 
+        where you can freely express your thoughts, opinions, and 
+        recommendations about your favorite books. Whether you're 
+        an avid reader, a literary enthusiast, or simply looking for
+        your next captivating read, Abook is the perfect platform for you.
+        Happy reading and warmest welcome to Abook! 🌟
+      </p>
+    </main>
+    <div class="log-in">
+      <p>Alreday have an account! Log In <a href="{{ url_for('auth.login') }}">Here</a></p>
     </div>
-    
-    <div class="form-group">
-      {{ form.last_name.label }}{{ form.last_name(placeholder="Last name", class="form-control") }}
-      {% for error in form.last_name.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="form-group">
-      {{ form.email.label() }}{{ form.email(placeholder="Email Address", class="form-control") }}
-      {% for error in form.email.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="form-group">
-      {{ form.password1.label() }}{{ form.password1(placeholder="Password", class="form-control") }}
-      {% for error in form.password1.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    <div class="form-group">
-      {{ form.password2.label() }}{{ form.password2(placeholder="Confirm Password", class="form-control") }}
-      {% for error in form.password2.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
-    </div>
-    <div class="form-group">
-      {{ form.birthday.label() }}{{ form.birthday(placeholder="Birthday", class="form-control") }}
-      {% for error in form.birthday.errors %}
-        <span class="error">{{ error }}</span>
-      {% endfor %}
-    </div>
-    
-    {{ form.submit(class="btn") }}
-  </form>
-</div>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
-{% endblock content %}
+  </div>  
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block head %}
+    <title>Search</title>
+    <script>
+        $(document).ready(function() {
+            $('#search-input').on('input', function() {
+                var keyword = $(this).val();
+                var csrf_token = "{{ csrf_token() }}";
+        
+                $.ajax({
+                    url: '/search',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 'keyword': keyword }),
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRF-Token", csrf_token);
+                    },
+                    success: function(response) {
+                        var results = response.results;
+                        console.log(results);
+        
+                        var listItems = results.map(function(user) {
+                            return `
+                                <li>
+                                    <a href="${user.url}">
+                                        ${user.username} ${user.last_name}
+                                    </a>
+                                </li>
+                            `;
+                        });
+                        $('#search-results').html(listItems.join(''));
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock head %}
+{% block content %}
+<div class="container">
+    <h1 class="title">Real-Time Search Engine</h1>
+    <input id="search-input" type="text" placeholder="Search..." class="search-input">
+    <ul id="search-results" class="search-results"></ul>
+</div> 
+{% endblock content %}

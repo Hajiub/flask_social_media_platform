@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>Friend Requests</title>
+<title>Friend Requests</title>
 {% endblock head %}
 
 {% block content %}
@@ -19,6 +19,7 @@
     <div class="friend-requests">
         <a href="{{ url_for('friend.friends_list') }}">Friends</a>
         {% if friends_list %}
+            <h1>Friend requests</h1>
             <div class="friend-container">
                 {% for friend in friends_list %}
                     <div class="friend-card">
@@ -29,12 +30,12 @@
                                 </a>
                             {% else %}
                                 <a href="{{ url_for('profiles.user_profile', user_id=friend.id) }}">
-                                    <img class="profile-pic" src="{{ url_for('static', filename='images/default_image.jpeg') }}" alt="Default Profile Picture">
+                                    <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
                                 </a>
                             {% endif %}
                         </div>
                         <div class="username">
-                            <h3>{{ friend.first_name }} {{ friend.last_name }}</h3>
+                            <h2>{{ friend.username }}</h2>
                         </div>
                         <div class="buttons">
                             <a href="{{ url_for('friend.accept_friend_request', friend_id=friend.id) }}">
@@ -51,5 +52,41 @@
             <p class="no-requests">No friend requests at the moment.</p>
         {% endif %}
     </div>
-<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <div class="users-container">
+        {% if users_list %}
+        <h1>Users You might now!</h1>
+            <div class="user-container">
+                {% for user in users_list %}
+                    <div class="user-card">
+                        <div class="profile-picture">
+                            {% if user.profile_pic %} 
+                                <a href="{{ url_for('profiles.user_profile', user_id=user.id) }}">
+                                    <img class="profile-pic" src="{{ url_for('static', filename='data/' + user.email + '/' + user.profile_pic) }}" alt="Profile Picture">
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('profiles.user_profile', user_id=user.id) }}">
+                                    <img class="profile-pic" src="{{ url_for('static', filename='images/defaul_image.jpeg') }}" alt="Default Profile Picture">
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="username">
+                            <h3>{{ user.username }}</h3>
+                        </div>
+                        <div class="buttons">
+                            <a href="{{ url_for('friend.send_friend_request', friend_id=user.id) }}">
+                              
+                                <button class="accept-btn" >Add</button>
+                            </a>
+            
+                            <a href="{{ url_for('profiles.user_profile', user_id=user.id) }}">
+                                
+                                <button class="success-btn" >View Profile</button>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
 {% endblock content %}
